@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Etch-a-Sketch</title>
+        <meta charset="utf-8"/>
+        <style>
+            div {
+                background-color: blue;
+                float: left;
+                width: 6.25%;
+                height: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <header><button>New Grid</button></header>
+        <container></container>
+    </body>
+    <script>
+        const container = document.querySelector('container');
+        const btn = document.querySelector('button');
+        
+        //create initial divs
+        for (i=1;i<=256;i++) {
+            const div = document.createElement('div');
+            container.appendChild(div);
+        }
+
+        function changeDivColor (e) {
+            //console.log(e);
+            e.target.style.backgroundColor = 'red';
+        }
+
+        function getNewGrid (e) {
+            const gridSize = prompt('Enter new grid size');
+            while (container.hasChildNodes()) {
+                container.removeChild(container.firstChild);
+            }
+            
+        }
+
+        container.addEventListener('mouseover', changeDivColor);
+        btn.addEventListener('click', getNewGrid);
+    </script>
+</html>
