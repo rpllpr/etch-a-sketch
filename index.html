@@ -36,6 +36,7 @@
 
         function getNewGrid (e) {
             const gridSize = prompt('Enter new grid size');
+            if (!gridSize) return;
 
             //this while loop removes all child nodes (divs) from the container element
             while (container.hasChildNodes()) {
