@@ -4,11 +4,15 @@
         <title>Etch-a-Sketch</title>
         <meta charset="utf-8"/>
         <style>
+            container {
+                display: grid;
+                width: 320px;
+                height: 320px;
+                grid-template-columns: repeat(16, 20px);
+                grid-template-rows: repeat(16, 20px);
+            }
             div {
                 background-color: blue;
-                float: left;
-                width: 6.25%;
-                height: 30px;
             }
         </style>
     </head>
@@ -27,18 +31,44 @@
         }
 
         function changeDivColor (e) {
-            //console.log(e);
             e.target.style.backgroundColor = 'red';
         }
 
         function getNewGrid (e) {
             const gridSize = prompt('Enter new grid size');
+
+            //this while loop removes all child nodes (divs) from the container element
             while (container.hasChildNodes()) {
                 container.removeChild(container.firstChild);
             }
-            
-        }
+            //use getComputerStyle to get computed(CSS), not inline, style info
+            //UPDATE: turns out I don't use this info; see next section below.
+            const containerWidth = getComputedStyle(container).width;
+            btn.focus();
 
+            //get all the styles from CSS            
+            const stylesheet = document.styleSheets[0];
+            let containerStyleSheet;
+
+            //loop through the styles until 'container' selector is found, 
+            //and then assign it to 'containerStyleSheet'
+            for(let i = 0; i < stylesheet.cssRules.length; i++) {
+                if(stylesheet.cssRules[i].selectorText === 'container') {
+                    containerStyleSheet = stylesheet.cssRules[i];
+                }
+            }
+
+            //set the grid-template-columns,rows to the entered grid size
+            containerStyleSheet.style.setProperty('grid-template-columns', `repeat(${gridSize}, 1fr)`);
+            containerStyleSheet.style.setProperty('grid-template-rows', `repeat(${gridSize}, 1fr)`);
+            
+            //create new divs based on entered grid size
+            for (i=1;i<=(gridSize*gridSize);i++) {
+                const div = document.createElement('div');
+                container.appendChild(div);
+            }
+        }
+        
         container.addEventListener('mouseover', changeDivColor);
         btn.addEventListener('click', getNewGrid);
     </script>
