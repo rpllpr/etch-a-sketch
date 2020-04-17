@@ -3,13 +3,14 @@
     <head>
         <title>Etch-a-Sketch</title>
         <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
             container {
                 display: grid;
                 width: 320px;
                 height: 320px;
-                grid-template-columns: repeat(16, 20px);
-                grid-template-rows: repeat(16, 20px);
+                grid-template-columns: repeat(16, 1fr);
+                grid-template-rows: repeat(16, 1fr);
             }
             div {
                 background-color: blue;
@@ -23,8 +24,19 @@
     <script>
         const container = document.querySelector('container');
         const btn = document.querySelector('button');
+
+        //set container width and height based on current window size, max 700 px
+        //subtract 15px so there is no scrolling
+        let winWidth = window.innerWidth;
+        if (winWidth<=700) {
+            container.style.width = (winWidth-15)+'px';
+            container.style.height = (winWidth-15)+'px'; 
+        } else {
+            container.style.width = 685+'px';
+            container.style.height = 685+'px'; 
+        }
         
-        //create initial divs
+        //create initial divs in container
         for (i=1;i<=256;i++) {
             const div = document.createElement('div');
             container.appendChild(div);
@@ -42,9 +54,11 @@
             while (container.hasChildNodes()) {
                 container.removeChild(container.firstChild);
             }
+
             //use getComputerStyle to get computed(CSS), not inline, style info
             //UPDATE: turns out I don't use this info; see next section below.
             const containerWidth = getComputedStyle(container).width;
+            
             btn.focus();
 
             //get all the styles from CSS            
